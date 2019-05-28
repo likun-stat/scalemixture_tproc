@@ -1,2 +1,2 @@
-# scalemixture_tproc
-Compare with t-process
+# scalemixture_regCov
+Complete covariance parameters
