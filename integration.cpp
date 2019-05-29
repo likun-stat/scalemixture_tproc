@@ -17,7 +17,7 @@
 using namespace Rcpp;
 
 
-struct my_f_params {double x; double tau_sqd; double gamma; double sigma};
+struct my_f_params {double x; double tau_sqd; double gamma; double sigma;};
 
 // xval > 1
 double mix_me_distn_integrand(double x, void *p) {
