@@ -27,7 +27,7 @@ double mix_me_distn_integrand(double x, void *p) {
     double gamma = (params->gamma);
     double sigma = (params->sigma);
     
-    double half_result = R::pt((xval-x)/sigma, gamma);
+    double half_result = R::pt((xval-x)/sigma, gamma,0,0);
     
     return R::dnorm(x, 0.0, sqrt(tau_sqd), 0) * half_result;
 }
@@ -40,7 +40,7 @@ double mix_me_dens_integrand(double x, void *p) {
     double gamma = (params->gamma);
     double sigma = (params->sigma);
     
-    double half_result = R::dt((xval-x)/sigma, gamma);
+    double half_result = R::dt((xval-x)/sigma, gamma,0);
     
     return R::dnorm(x, 0.0, sqrt(tau_sqd), 0) * half_result;
 }
@@ -149,10 +149,7 @@ NumericVector dmixture_me(NumericVector x, double tau_sqd, double gamma, double 
         // QAGI adaptive integration on infinite intervals
         double err = gsl_integration_qagi(&F, 1e-12, relerr, 1e5, work, &result, &abserr);
         
-        if (!ISNAN(err)){
-            result =  result;
-        }
-        else {
+        if (ISNAN(err)){
             Rcpp::Rcout << "Error in integration. Returning -1" << std::endl;
             Rcpp::Rcout << "Err = " << err << std::endl;
             result = -1.0;
