@@ -211,7 +211,7 @@ Res <- adaptive.metr(z = R, starting.theta = theta.gpd[2:3],
                      likelihood.fn = theta.gpd.update.mixture.me.likelihood, prior.fn = unif.a.b,
                      hyper.params = max(lon[!cen]), n.updates = 30000, prop.Sigma = NULL, adapt.cov = TRUE, return.prop.Sigma.trace = FALSE,
                      r.opt = .234, c.0 = 10, c.1 = .8, K = 10,
-                     shape=shape, lon=lon, Y =Y, X.s = X.s, cen = cen, prob.below = prob.below, delta = delta, tau_sqd = tau, loc = thresh, 
+                     shape=shape, lon=lon, Y =Y, X.s = X.s, cen = cen, prob.below = prob.below,gamma=gamma, sigma=sigma, tau_sqd = tau, loc = thresh, 
                      thresh.X=thresh.X, missing = missing)
 prop.Sigma.theta <- cov(Res$trace[10000:30000,])
 sd.ratio <- sqrt(prop.Sigma.theta[1,1]/prop.Sigma.theta[2,2])
