@@ -148,8 +148,7 @@ V <- eig.Sigma$vectors
 d <- eig.Sigma$values
 Res<-foreach(t = 1:n.t, .combine = "cbind", .inorder=FALSE, .noexport = "update_X_s_onetime")%dopar%{
   X.s.tmp<-X[,t]
-  tmp<-min(X.s.tmp[X.s.tmp>1])
-  X.s.tmp[X.s.tmp<1]<-tmp
+  
   res<- update_X_s_onetime(Y[,t], X[,t], X.s.tmp, cen[,t], prob.below, theta.gpd, shape, lon[,t], gamma, sigma, 
                            tau, thresh.X, v.q[,t], R[t], V=V, d=d, missing = missing)
   c(res$X.s, res$accept)
