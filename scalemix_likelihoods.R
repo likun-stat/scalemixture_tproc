@@ -347,7 +347,7 @@ theta.gpd.update.mixture.me.likelihood <- function(data, params, shape, lon, Y, 
                                theta.gpd=theta.gpd, shape=shape, lon=lon[!cen & !missing], prob.below = prob.below)
   
   ll <- marg.transform.data.mixture.me.likelihood(Y, X, X.s, cen, prob.below,
-                                  theta.gpd, shape, lon, gamma, sigmaa, tau_sqd, thresh.X = thresh.X, missing = missing)
+                                  theta.gpd, shape, lon, gamma, sigma, tau_sqd, thresh.X = thresh.X, missing = missing)
   
   return(ll)
 }
