@@ -96,7 +96,7 @@ corr.fn <- function(d, rho, nu){
 ##                                     function.
 ##
 qmixture.me.interp <- function(p, tau_sqd, gamma, sigma, mu=0, cdf.vals = NULL, x.vals = NULL,
-                               n.x=10000, lower=5, upper=20, method="fmm") {
+                               n.x=1000, lower=5, upper=20, method="fmm") {
   
   if (is.null(x.vals)) {
     x.range <- find_xrange_pmixture_me(min(p), max(p), c(lower, upper), 
@@ -137,7 +137,7 @@ qmixture.me.interp <- function(p, tau_sqd, gamma, sigma, mu=0, cdf.vals = NULL, 
 mix.distn.integrand <- function(x, xval, tau_sqd, gamma, sigma) {
   prod <- rep(0, length(x))
 
-  half_result = pt((xval-x)/sigma, gamma)
+  half_result = pt((xval-x)/sigma, df=gamma, lower.tail=TRUE)
   prod <- dnorm(x, 0.0, sqrt(tau_sqd)) * half_result
   return(prod)
 }
@@ -145,7 +145,7 @@ mix.distn.integrand <- function(x, xval, tau_sqd, gamma, sigma) {
 mix.dens.integrand <- function(x, xval, tau_sqd, gamma, sigma) {
   prod <- rep(0, length(x))
   
-  half_result = dt((xval-x)/sigma, gamma)
+  half_result = dt((xval-x)/sigma, df=gamma)/sigma
   prod <- dnorm(x, 0.0, sqrt(tau_sqd)) * half_result
   return(prod)
 }
@@ -168,7 +168,7 @@ mix.dens.integrand <- function(x, xval, tau_sqd, gamma, sigma) {
 ##
 pmixture.uni <- function(xval, tau_sqd, gamma, sigma) {
   integ <- integrate(mix.distn.integrand, -Inf, Inf,  xval=xval, tau_sqd = tau_sqd, gamma=gamma, sigma=sigma, rel.tol = 1e-10)
-  return(pnorm(xval-1, 0.0, sqrt(tau_sqd))-integ$value)
+  return(integ$value)
 }
 pmixture <- Vectorize(pmixture.uni, "xval")
 
@@ -395,9 +395,9 @@ dhuser.wadsworth <- function(R, gamma, sigma, log=TRUE) {
   n.t <- length(R)
   
   if (log) {
-    dens <- sum(dinvgamma(R^2/sigma^2, shape=gamma/2, scale=2, log=TRUE)+log(2*R/sigma^2))
+    dens <- sum(dinvgamma(R^2/(gamma*sigma^2), shape=gamma/2, scale=2, log=TRUE)+log(2*R/(gamma*sigma^2)))
   } else {
-    dens <- prod(dinvgamma(R^2/sigma^2, shape=gamma/2, scale=2)*2*R/sigma^2)
+    dens <- prod(dinvgamma(R^2/(gamma*sigma^2), shape=gamma/2, scale=2)*2*R/(gamma*sigma^2))
   }
   return(dens)
 }

@@ -61,12 +61,12 @@ theta.gpd <- c(thresh, a, b) #scale, shape
 
 # (b) Pick initial values for delta and tau ==> MARGINAL BEHAVIOR of X
 #     Note that pmixture.me fails at low quantile
-tau = 0.1; gamma = 6; sigma =2
+tau = 5; gamma = 6; sigma =2
 thresh.X <- qmixture.me.interp(prob.below, tau_sqd = tau, gamma = gamma, sigma = sigma)
 num_samples <- 200000
 Y_sample <- rep(NA,num_samples)
 for(j in 1:num_samples){
-  R_tmp <- sigma*sqrt(invgamma::rinvgamma(1, shape=gamma/2, scale=2))
+  R_tmp <- sigma*sqrt(gamma*invgamma::rinvgamma(1, shape=gamma/2, scale=2))
   Y_sample[j] <- R_tmp*rnorm(1)+rnorm(1, sd=sqrt(tau))
 }
 X.cdf.emp <- ecdf(Y_sample)
