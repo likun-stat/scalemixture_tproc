@@ -201,7 +201,7 @@ initial.values <- list(gamma = gamma, sigma = sigma, rho=rho, nu=nu, tau=tau, th
 # true.params <- initial.values
 n.updates <- 50000
 thin <- 10
-echo.interval <- 100
+echo.interval <- 50
 
 save(Y, X, Y.org, thresh.X, cen, missing, initial.values, file="Initial.RData")
 

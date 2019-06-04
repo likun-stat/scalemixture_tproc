@@ -355,9 +355,9 @@ scalemix.sampler.02.DA <- function(Y, S, cen, lon, thresh,
     
     if(holdout) {
       X.s.holdout<-foreach(t = 1:n.t, .combine='cbind')%dopar%{
-        X.s.to.Z <- qnorm(1-R[t]/X.s[,t])
-        Z.tmp<-condMVNorm::rcmvnorm(1, mean=rep(0,n.s+n.holdout), sigma = Sigma_full, dependent.ind = (n.s+1):(n.s+n.holdout), given.ind = 1:n.s, X.given = X.s.to.Z)
-        R[t]/(1-pnorm(Z.tmp))
+        # X.s.to.Z <- qnorm(1-R[t]/X.s[,t])
+        Z.tmp<-condMVNorm::rcmvnorm(1, mean=rep(0,n.s+n.holdout), sigma = Sigma_full, dependent.ind = (n.s+1):(n.s+n.holdout), given.ind = 1:n.s, X.given = X.s[,t]/R[t])
+        R[t]*Z.tmp
       }
       X.s.holdout.trace[i-1, , ] <- X.s.holdout
     }
@@ -783,9 +783,9 @@ scalemix.sampler.02.cont.DA <- function(Y, S, cen, lon, thresh,
     
     if(holdout) {
       X.s.holdout<-foreach(t = 1:n.t, .combine='cbind')%dopar%{
-        X.s.to.Z <- qnorm(1-R[t]/X.s[,t])
-        Z.tmp<-condMVNorm::rcmvnorm(1, mean=rep(0,n.s+n.holdout), sigma = Sigma_full, dependent.ind = (n.s+1):(n.s+n.holdout), given.ind = 1:n.s, X.given = X.s.to.Z)
-        R[t]/(1-pnorm(Z.tmp))
+        # X.s.to.Z <- qnorm(1-R[t]/X.s[,t])
+        Z.tmp<-condMVNorm::rcmvnorm(1, mean=rep(0,n.s+n.holdout), sigma = Sigma_full, dependent.ind = (n.s+1):(n.s+n.holdout), given.ind = 1:n.s, X.given = X.s[,t]/R[t])
+        R[t]*Z.tmp
       }
       X.s.holdout.trace[i-1+i_prev, , ] <- X.s.holdout
     }
