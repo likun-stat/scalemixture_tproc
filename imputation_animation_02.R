@@ -208,40 +208,40 @@ save(Y, X, Y.org, thresh.X, cen, missing, initial.values, file="Initial.RData")
 # Calculate
 Res <- adaptive.metr(z = R, starting.theta = theta.gpd[2:3],
                      likelihood.fn = theta.gpd.update.mixture.me.likelihood, prior.fn = unif.a.b,
-                     hyper.params = max(lon[!cen]), n.updates = 30000, prop.Sigma = NULL, adapt.cov = TRUE, return.prop.Sigma.trace = FALSE,
+                     hyper.params = max(lon[!cen]), n.updates = 1000, prop.Sigma = NULL, adapt.cov = TRUE, return.prop.Sigma.trace = FALSE,
                      r.opt = .234, c.0 = 10, c.1 = .8, K = 10,
                      shape=shape, lon=lon, Y =Y, X.s = X.s, cen = cen, prob.below = prob.below,gamma=gamma, sigma=sigma, tau_sqd = tau, loc = thresh, 
                      thresh.X=thresh.X, missing = missing)
-prop.Sigma.theta <- cov(Res$trace[10000:30000,])
+prop.Sigma.theta <- cov(Res$trace[500:1000,])
 sd.ratio <- sqrt(prop.Sigma.theta[1,1]/prop.Sigma.theta[2,2])
-prop.Sigma <- list(gpd.corr=cor(Res$trace[10000:30000,])[1,2], theta.gpd=prop.Sigma.theta/prop.Sigma.theta[1,1])
+prop.Sigma <- list(gpd.corr=cor(Res$trace[500:1000,])[1,2], theta.gpd=prop.Sigma.theta/prop.Sigma.theta[1,1])
 
 Res<-adaptive.metr(z = R, starting.theta = c(rho, nu),
-            likelihood.fn = rho.update.mixture.me.likelihood, prior.fn = rho.prior,
-            hyper.params = 1, n.updates = 30000, prop.Sigma = NULL, adapt.cov=TRUE, return.prop.Sigma.trace = FALSE,
-            r.opt = .234, c.0 = 10, c.1 = .8, K = 10,
-            X.s = X.s, R = R, S = ffwi.locs)
-prop.Sigma.rho <- cov(Res$trace[10000:30000,])
+                   likelihood.fn = rho.update.mixture.me.likelihood, prior.fn = rho.prior,
+                   hyper.params = 1, n.updates = 1000, prop.Sigma = NULL, adapt.cov=TRUE, return.prop.Sigma.trace = FALSE,
+                   r.opt = .234, c.0 = 10, c.1 = .8, K = 10,
+                   X.s = X.s, R = R, S = ffwi.locs)
+prop.Sigma.rho <- cov(Res$trace[500:1000,])
 sd.ratio.rho <- sqrt(prop.Sigma.rho[1,1]/prop.Sigma.rho[2,2])
-prop.Sigma <- c(prop.Sigma, list(rho.corr=cor(Res$trace[10000:30000,])[1,2], rho=prop.Sigma.rho/prop.Sigma.rho[1,1]))
+prop.Sigma <- c(prop.Sigma, list(rho.corr=cor(Res$trace[500:1000,])[1,2], rho=prop.Sigma.rho/prop.Sigma.rho[1,1]))
 
 Res<-adaptive.metr(z = R, starting.theta = c(gamma, sigma), 
                    likelihood.fn = delta.update.mixture.me.likelihood, prior.fn = interval.unif,
-                   hyper.params = 1, n.updates = 30000, prop.Sigma = NULL, adapt.cov=TRUE, return.prop.Sigma.trace = FALSE,
+                   hyper.params = 1, n.updates = 1000, prop.Sigma = NULL, adapt.cov=TRUE, return.prop.Sigma.trace = FALSE,
                    r.opt = .234, c.0 = 10, c.1 = .8, K = 10,
                    Y = Y, X.s = X.s, cen = cen, prob.below = prob.below, theta.gpd = theta.gpd, shape = shape, lon = lon, tau_sqd = tau,
                    missing = missing)
-prop.Sigma.delta <- cov(Res$trace[10000:30000,])
+prop.Sigma.delta <- cov(Res$trace[500:1000,])
 sd.ratio.delta <- sqrt(prop.Sigma.delta[1,1]/prop.Sigma.delta[2,2])
-prop.Sigma <- c(prop.Sigma, list(delta.corr=cor(Res$trace[10000:30000,])[1,2], delta=prop.Sigma.delta/prop.Sigma.delta[1,1]))
+prop.Sigma <- c(prop.Sigma, list(delta.corr=cor(Res$trace[500:1000,])[1,2], delta=prop.Sigma.delta/prop.Sigma.delta[1,1]))
 
 
-sigma.m<-list(theta.gpd=(2.4/2)^2)
+sigma.m<-list(theta.gpd=(2.4/2)^2,rho=(2.4/2)^2,delta=(2.4/2)^2)
 cat("sd.ratio=",sd.ratio,"\n")
 cat("corr=",prop.Sigma$gpd.corr,"\n")
 cat("sigma11=",prop.Sigma.theta[1,1],"\n")
 
-if(prop.Sigma.theta[2,2]>0  & sd.ratio<100) {
+if(prop.Sigma.theta[2,2]>0  & sd.ratio<200) {
   scalemix.sampler.02.DA(Y=Y, S=ffwi.locs, cen=cen, lon=lon, thresh=thresh,
                          initial.values=initial.values,
                          n.updates=n.updates, thin=thin,
