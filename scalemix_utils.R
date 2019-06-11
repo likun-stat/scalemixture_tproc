@@ -96,7 +96,7 @@ corr.fn <- function(d, rho, nu){
 ##                                     function.
 ##
 qmixture.me.interp <- function(p, tau_sqd, gamma, sigma, mu=0, cdf.vals = NULL, x.vals = NULL,
-                               n.x=1000, lower=5, upper=20, method="fmm") {
+                               n.x=100, lower=5, upper=20, method="fmm") {
   
   if (is.null(x.vals)) {
     x.range <- find_xrange_pmixture_me(min(p), max(p), c(lower, upper), 
@@ -277,7 +277,7 @@ gpd.2.scalemix.me <- function(y, tau_sqd, gamma, sigma, theta.gpd, shape, lon, p
   
   # unifs <- pgpd(y, loc=thresh, scale=scale, shape=shape)
   unifs <- (1-prob.below) * pgpd(y, loc=thresh, scale=Scale, shape=shape) + prob.below
-  scalemixes <- qmixture.me.interp(unifs, tau_sqd = tau_sqd, gamma=gamma, sigma=sigma, n.x=1000)
+  scalemixes <- qmixture.me.interp(unifs, tau_sqd = tau_sqd, gamma=gamma, sigma=sigma, n.x=500)
   
   return(scalemixes)
 }

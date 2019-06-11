@@ -9,7 +9,7 @@ source("~/Desktop/Research/scalemixture_tproc/scalemix_likelihoods.R")
 source("~/Desktop/Research/scalemixture_tproc/scalemix_priors.R")
 source("~/Desktop/Research/scalemixture_tproc/generic_samplers.R")
 source("~/Desktop/Research/scalemixture_tproc/scalemix_sampler_02.R")
-
+source("./prior_tau.R")
 load("./ffwi.RData")
 
 n.cores <- 20
@@ -22,7 +22,7 @@ clusterEvalQ(cl, source("~/Desktop/Research/scalemixture_tproc/scalemix_likeliho
 clusterEvalQ(cl, source("~/Desktop/Research/scalemixture_tproc/scalemix_utils.R"))
 clusterEvalQ(cl, source("~/Desktop/Research/scalemixture_tproc/generic_samplers.R"))
 clusterEvalQ(cl, source("~/Desktop/Research/scalemixture_tproc/scalemix_priors.R"))
-
+clusterEvalQ(cl, source("./prior_tau.R"))
 registerDoParallel(cl)
 
 library(fields)   # For rdist
